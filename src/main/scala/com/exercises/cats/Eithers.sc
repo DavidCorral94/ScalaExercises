@@ -89,4 +89,8 @@ object Eithers {
     Either.catchOnly[NumberFormatException]("abc".toInt)
 
   either.isLeft == true
+
+  val rightVal: Either[String, Int] = 7.asRight[String]
+
+  val leftVal: Either[String, Int] = "hello 🐈s".asLeft[Int]
 }
