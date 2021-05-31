@@ -73,3 +73,86 @@ object Validateds {
 
   invalid == Validated.invalid(errors)
 }
+
+object OfficialDocs {
+
+  // An example of sequential validation with Either
+  sealed trait DomainValidation {
+    def errorMessage: String
+  }
+
+  case object WrongUsername extends DomainValidation {
+    def errorMessage: String = "Wrong username"
+  }
+
+  case object WrongPassword extends DomainValidation {
+    def errorMessage: String = "Wrong password"
+  }
+
+  case object WrongAge extends DomainValidation {
+    def errorMessage: String = "Wrong age"
+  }
+
+  case class UserData(username: String, password: String, age: Int)
+
+  sealed trait FormValidator {
+    def validateUsername(username: String) =
+      Either.cond(username.nonEmpty, username, WrongUsername)
+
+    def validatePassword(password: String) =
+      Either.cond(password.length > 6, password, WrongPassword)
+
+    def validateAge(age: Int) =
+      Either.cond(age >= 18, age, WrongAge)
+
+    def validateForm(username: String, password: String, age: Int) =
+      for {
+        validUsername <- validateUsername(username)
+        validPassword <- validatePassword(password)
+        validAge <- validateAge(age)
+      } yield UserData(validUsername, validPassword, validAge)
+  }
+
+  object FormValidator extends FormValidator
+
+  FormValidator.validateForm("", "", 18)
+  FormValidator.validateForm("David", "", 18)
+  FormValidator.validateForm("", "LOL", 18)
+  FormValidator.validateForm("David", "LOL", 17)
+  FormValidator.validateForm("David", "LOL", 18)
+  FormValidator.validateForm("David", "LOL123456", 18)
+
+  // Now, update this using the Cat's Validated approach
+  import cats.data._
+  import cats.data.Validated._
+  import cats.implicits._
+
+  sealed trait FormValidatorNec {
+
+    def validateUsername(username: String) =
+      if (username.nonEmpty) username.validNec else WrongUsername.invalidNec
+
+    def validatePassword(password: String) =
+      if (password.length > 6) password.validNec else WrongPassword.invalidNec
+
+    def validateAge(age: Int) =
+      if (age >= 18) age.validNec else WrongAge.invalidNec
+
+    def validateForm(username: String, password: String, age: Int) =
+      (validateUsername(username), validatePassword(password), validateAge(age))
+        .mapN(UserData)
+
+  }
+  object FormValidatorNec extends FormValidatorNec
+
+  FormValidatorNec.validateForm("", "", 18)
+  FormValidatorNec.validateForm("David", "", 18)
+  FormValidatorNec.validateForm("", "LOL", 18)
+  FormValidatorNec.validateForm("David", "LOL", 17)
+  FormValidatorNec.validateForm("David", "LOL", 18)
+  FormValidatorNec.validateForm("David", "LOL123456", 18)
+
+  val fromVal2Either =
+    FormValidatorNec.validateForm("David", "LOL123456", 18).toEither
+
+}
