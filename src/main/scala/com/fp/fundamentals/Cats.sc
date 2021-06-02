@@ -16,4 +16,13 @@ object Cats{
 
   val nel = NonEmptyList(1, List())
   nel.append(2)
+
+  // Implicit constructors
+  // Option
+  val opNone = none[Int]
+  val opSome = 5.some
+
+  // Either
+  val eiLeft = "error".asLeft[Int]
+  val eiRight = 200.asRight[String]
 }
