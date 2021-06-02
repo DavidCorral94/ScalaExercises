@@ -4,6 +4,5 @@ This is a space to collect suggestions, doubts and/or problems that I'm facing w
 
 ## Cats
 
-- What are the most common Functors? List, Option and Future?
-- Why `Foldable[List].foldK(List(None, Option("two"), Option("three")))` is `Some("two")`
-  while `Foldable[List].foldK(List(List(1, 2), List(3, 4, 5)))` is `List(1,2,3,4,5)`
+- In `Monad`, I don't really get what is the use of utility of `tailRecM`. Check `MonadExercise.scala`
+  in `fp.fundamentals` package to verify is that is its purpose
