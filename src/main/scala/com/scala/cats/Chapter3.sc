@@ -130,5 +130,7 @@ object Chapter3_5 {
   implicit val doubleCodec: Codec[Double] =
     stringCodec.imap(_.toDouble, _.toString)
 
-  // Codec for Box WIP
+  implicit def boxCodec[A](implicit c: Codec[A]): Codec[Box[A]] =
+    c.imap[Box[A]](Box(_), _.value)
+
 }
