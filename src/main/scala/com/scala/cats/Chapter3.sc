@@ -134,3 +134,42 @@ object Chapter3_5 {
     c.imap[Box[A]](Box(_), _.value)
 
 }
+object Chapter3_6 {
+  // CONTRAVARIANT AND INVARIANT FUNCTORS (IN CATS)
+
+  // Contravariant
+  import cats.Contravariant
+  import cats.Show
+  import cats.instances.string._
+
+  val showString = Show[String]
+
+  val showSymbol =
+    Contravariant[Show].contramap(showString)((sym: Symbol) => s"'${sym.name}")
+
+  showSymbol.show(Symbol("dave"))
+
+  import cats.syntax.contravariant._ // for contramap
+
+  showString
+    .contramap[Symbol](sym => s"'${sym.name}")
+    .show(Symbol("dave"))
+
+  import cats.Monoid
+  import cats.instances.string._ // for Monoid
+  import cats.syntax.invariant._ // for imap
+  import cats.syntax.semigroup._ // for |+|
+
+  def f(string: String): Symbol = Symbol.apply(string)
+  def g(symbol: Symbol): String = symbol.name
+
+  implicit val symbolMonoid: Monoid[Symbol] = new Monoid[Symbol] {
+    override def empty: Symbol = Symbol("'")
+
+    override def combine(x: Symbol, y: Symbol) = Symbol(x.name ++ y.name)
+  }
+
+  Monoid[Symbol].empty
+
+  Symbol("a") |+| Symbol("few") |+| Symbol("words")
+}
