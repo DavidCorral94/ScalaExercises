@@ -1,71 +1,46 @@
 package com.taglessfinal
 
 import cats.Monad
-import cats.implicits._
+import cats.effect.{ExitCode, IO, IOApp, Sync}
+import com.taglessfinal.DataTypes.User
+import com.taglessfinal.TypeClasses._
 
-import scala.language.implicitConversions
+object DataTypes {
+  case class Email(address: String)
+  case class User(id: Int, name: String, emails: List[Email])
+}
 
-object TaglessFinal {
+object TypeClasses {
 
-  // Source: https://www.baeldung.com/scala/tagless-final-pattern
-  // But modified by guidance of Yago
-  // Finished by a Type classes Masterclass of Rafa
-
-  case class Address(address: String, city: String, country: String)
-  case class User(id: Int, name: String, address: Address, emails: List[String])
-
-  trait Users[F[_]] {
-    def createUser(
-        id: Int,
-        name: String,
-        address: Address,
-        emails: List[String]
-    ): F[Unit]
-    def find(id: Int): F[Option[User]]
-    def addEmail(user: User, email: String): F[User]
+  trait UserRepository[F[_]] {
+    def findUser(id: Int): F[Option[User]]
   }
 
-  // Database mock
-  // I know this is B.S. because in a real world we would have a DB connection service o something like that
-  // but, at this point, this is the best (and easiest) way to represent a DB within my example
-  var db: Map[Int, User] = Map().empty
+  object UserRepository {
 
-  final class UsersProvider[F[_]: Monad] extends Users[F] {
-    def createUser(
-        id: Int,
-        name: String,
-        address: Address,
-        emails: List[String]
-    ): F[Unit] = {
-      db = db + (id -> User(id, name, address, emails))
-      Monad[F].unit
-    }
+    def apply[F[_]](implicit F: UserRepository[F]): UserRepository[F] = F
 
-    def find(id: Int): F[Option[User]] = {
-      Monad[F].pure(db.get(id))
-    }
+    implicit def instance[F[_]: Monad]: UserRepository[F] =
+      new UserRepository[F] {
+        override def findUser(id: Int): F[Option[User]] =
+          Monad[F].pure(Option(User(id, "David", List())))
+      }
+  }
+}
 
-    def addEmail(user: User, email: String): F[User] = {
-      val emails = user.emails
-      val newUser = user.copy(emails = email :: emails)
-      Monad[F].pure(newUser)
-    }
+object Main extends App {
+
+  val userIO = UserRepository[IO].findUser(1)
+  val res = userIO.unsafeRunSync()
+  res match {
+    case None    => println("User not found")
+    case Some(u) => println(u)
   }
 
-  def main(args: Array[String]): Unit = {
-
-    new UsersProvider[Option].createUser(
-      1,
-      "David",
-      Address("Real 40", "San Fernando", "Spain"),
-      List()
-    )
-
-    val user = new UsersProvider[Option].find(1)
-
-    user.flatten match {
-      case Some(x) => println(x.name)
-      case None    => println("User not found")
-    }
+  val userList = UserRepository[List].findUser(1)
+  userList.foreach {
+    case Some(u) => println(u)
+    case None => println("User not found")
   }
+
 }
