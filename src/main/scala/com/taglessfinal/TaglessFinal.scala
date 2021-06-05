@@ -13,9 +13,10 @@ object DataTypes {
 object TypeClasses {
 
   trait UserRepository[F[_]] {
+    def listUsers(): F[List[User]]
     def persistUser(user: User): F[Boolean]
     def findUser(id: Int): F[Option[User]]
-    def updateUser(id: Int): F[Boolean]
+    def addEmail(user: User, email: Email): F[Boolean]
   }
 
   object UserRepository {
@@ -28,32 +29,51 @@ object TypeClasses {
     implicit def instance[F[_]: Monad]: UserRepository[F] =
       new UserRepository[F] {
 
+        def listUsers(): F[List[User]] =
+          Monad[F].pure(db.values.toList)
+
         def persistUser(user: User): F[Boolean] = {
           db = db + (user.id -> user)
           Monad[F].pure(true)
         }
 
         def findUser(id: Int): F[Option[User]] =
-          Monad[F].pure(Option(User(id, "David", List())))
+          if (db.contains(id))
+            Monad[F].pure(db.get(id))
+          else
+            Monad[F].pure(None)
 
-        def addEmail(id: Int, email: Email ): F[Boolean] = ???
+        def addEmail(user: User, email: Email): F[Boolean] = {
+          val newUser = user.copy(emails = email :: user.emails)
+          db = db + (user.id -> newUser)
+          Monad[F].pure(true)
+        }
       }
   }
 }
 
 object Main extends App {
 
-  val userIO = UserRepository[IO].findUser(1)
-  val res = userIO.unsafeRunSync()
-  res match {
-    case None    => println("User not found")
-    case Some(u) => println(u)
-  }
+  val user = User(1, "David Corral", List())
+  val userAdd = UserRepository[IO].persistUser(user)
+  println(s" User added? ${userAdd.unsafeRunSync()}")
+  val maybeUser = UserRepository[IO].findUser(1)
+  println(s" User ID 1 = ${maybeUser.unsafeRunSync()}")
 
-  val userList = UserRepository[List].findUser(1)
-  userList.foreach {
-    case Some(u) => println(u)
-    case None    => println("User not found")
-  }
+  val res = for {
+    maybeU <- UserRepository[IO].findUser(1)
+    updatedUser <- maybeU match {
+      case Some(x) =>
+        UserRepository[IO].addEmail(x, Email("david.corral@47deg.com"))
+      case None =>
+        throw new Exception("Oops, user not found")
+    }
+
+  } yield updatedUser
+
+  println(s" User updated? ${res.unsafeRunSync()}")
+
+  val users = UserRepository[IO].listUsers().unsafeRunSync()
+  println(users)
 
 }
