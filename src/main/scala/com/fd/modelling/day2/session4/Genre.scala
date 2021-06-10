@@ -2,10 +2,7 @@ package com.fd.modelling.day2.session4
 
 import cats.data.EitherNec
 import cats.implicits._
-
-// Errors
-sealed abstract class DomainError extends Product with Serializable
-case class GenreNotSupported(givenValue: String) extends DomainError
+import com.fd.modelling.day2.session4.Errors.GenreNotSupported
 
 // ADTs
 sealed abstract class Genre extends Product with Serializable
