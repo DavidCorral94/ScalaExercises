@@ -14,6 +14,8 @@ libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.14.1"
 // For type refinement exercise at Functional Domain Modelling training
 libraryDependencies += "eu.timepit" %% "refined" % "0.9.26"
 
+libraryDependencies += "com.codecommit"    %% "cats-effect-testing-scalatest" % "0.5.2"
+
 addCompilerPlugin(
   "org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.full
 )
