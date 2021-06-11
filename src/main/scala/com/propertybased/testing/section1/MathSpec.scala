@@ -1,4 +1,4 @@
-package com.propertybased.testing.session1
+package com.propertybased.testing.section1
 
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers

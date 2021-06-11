@@ -1,4 +1,4 @@
-package com.propertybased.testing.session2
+package com.propertybased.testing.section3
 
 import org.scalacheck.Gen
 
