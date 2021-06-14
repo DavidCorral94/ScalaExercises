@@ -15,7 +15,19 @@ libraryDependencies += "org.scalatestplus" %% "scalacheck-1-15" % "3.2.8.0"
 // For type refinement exercise at Functional Domain Modelling training
 libraryDependencies += "eu.timepit" %% "refined" % "0.9.26"
 
-libraryDependencies += "com.codecommit"    %% "cats-effect-testing-scalatest" % "0.5.2"
+libraryDependencies += "com.codecommit" %% "cats-effect-testing-scalatest" % "0.5.2"
+
+// Circe scala exercises
+val circeVersion = "0.14.1"
+
+libraryDependencies ++= Seq(
+  "io.circe" %% "circe-core",
+  "io.circe" %% "circe-generic",
+  "io.circe" %% "circe-parser"
+).map(_ % circeVersion)
+
+libraryDependencies += "io.circe" %% "circe-optics" % circeVersion
+
 
 addCompilerPlugin(
   "org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.full
