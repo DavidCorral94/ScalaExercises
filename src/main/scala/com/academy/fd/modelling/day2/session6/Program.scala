@@ -1,13 +1,29 @@
 package com.academy.fd.modelling.day2.session6
 
 import cats.Monad
-import cats.effect.IO
+import cats.effect.{IO, Sync}
+import cats.effect.concurrent.Ref
 import cats.syntax.flatMap._
 import cats.syntax.functor._
 import cats.syntax.traverse._
 import com.academy.fd.modelling.day2.session6.DataTypes._
 
 object Program extends Data {
+
+  def populateDB[F[_]: Sync](implicit
+      databaseService: DatabaseService[F]
+  ): F[Unit] =
+    databaseService.insertMovie(starWars) >>
+      databaseService.insertMovie(theEmpireStrikesBack) >>
+      databaseService.insertMovie(returnOfTheJedi) >>
+      databaseService.insertReview(user1ReviewForStarWars) >>
+      databaseService.insertReview(user1ReviewForTheEmpireStrikesBack) >>
+      databaseService.insertReview(user1ReviewForReturnOfTheJedi) >>
+      databaseService.insertReview(user1ReviewForEpisodeIThePhantomMenace) >>
+      databaseService.insertReview(user2ReviewForStarWars) >>
+      databaseService.insertReview(user2ReviewForTheEmpireStrikesBack) >>
+      databaseService.insertReview(user2ReviewForReturnOfTheJedi) >>
+      databaseService.insertReview(user2ReviewForEpisodeIThePhantomMenace)
 
   def getAllMoviesByGenre[F[_]: Monad](
       genre: Genre
@@ -31,26 +47,18 @@ object Program extends Data {
       movieWithReview <- movies.traverse(m => getMovieWithAvg(m))
     } yield movieWithReview.sortBy(_.avgScore).map(_.movie).take(3)
 
-  def populateDB(): Unit = {
-    MovieService[IO].addMovie(starWars)
-    MovieService[IO].addMovie(theEmpireStrikesBack)
-    MovieService[IO].addMovie(returnOfTheJedi)
-
-    ReviewService[IO].addReview(user1ReviewForStarWars)
-    ReviewService[IO].addReview(user1ReviewForTheEmpireStrikesBack)
-    ReviewService[IO].addReview(user1ReviewForReturnOfTheJedi)
-    ReviewService[IO].addReview(user1ReviewForEpisodeIThePhantomMenace)
-
-    ReviewService[IO].addReview(user2ReviewForStarWars)
-    ReviewService[IO].addReview(user2ReviewForTheEmpireStrikesBack)
-    ReviewService[IO].addReview(user2ReviewForReturnOfTheJedi)
-    ReviewService[IO].addReview(user2ReviewForEpisodeIThePhantomMenace)
-  }
-
   def main(args: Array[String]): Unit = {
-    populateDB()
+    val dbMovie = Ref.of[IO, List[Movie]](Nil).unsafeRunSync()
+    val dbReview = Ref.of[IO, List[Review]](Nil).unsafeRunSync()
+    implicit val databaseService: DatabaseService[IO] =
+      DatabaseService.instance(dbMovie, dbReview)
+    implicit val movieService: MovieService[IO] =
+      MovieService.instance(databaseService)
+    implicit val reviewService: ReviewService[IO] =
+      ReviewService.instance(databaseService)
 
     val sciFiMovies = getAllMoviesByGenre[IO](ScienceFiction).unsafeRunSync()
+    sciFiMovies.foreach(println(_))
     val sciFiTop3 =
       Program.topThreeRatedByGenre[IO](ScienceFiction).unsafeRunSync()
     sciFiTop3.foreach(println(_))

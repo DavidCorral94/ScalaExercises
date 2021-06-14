@@ -4,6 +4,8 @@ import cats.effect.Sync
 import com.academy.fd.modelling.day2.session6.DataTypes._
 import eu.timepit.refined.types.numeric.PosLong
 
+import scala.language.implicitConversions
+
 /**
   * This is an alternative to the exercises of session 4 and 5
   * -----------
@@ -17,25 +19,18 @@ trait MovieService[F[_]] {
 }
 
 object MovieService {
-  // Simulating a DB
-  var db: Map[PosLong, Movie] = Map().empty
 
   def apply[F[_]](implicit F: MovieService[F]): MovieService[F] = F
 
-  implicit def instance[F[_]: Sync]: MovieService[F] =
+  implicit def instance[F[_]: Sync](db: DatabaseService[F]): MovieService[F] =
     new MovieService[F] {
-      override def addMovie(movie: Movie): F[Unit] = {
-        db = db + (movie.id -> movie)
-        Sync[F].pure(())
-      }
+      override def addMovie(movie: Movie): F[Unit] =
+        db.insertMovie(movie)
 
       override def getMovieById(id: PosLong): F[Option[Movie]] =
-        if (db.contains(id))
-          Sync[F].pure(db.get(id))
-        else
-          Sync[F].pure(None)
+        db.selectMovie(id)
 
       override def findMoviesByGenre(genre: Genre): F[List[Movie]] =
-        Sync[F].pure(db.filter(m => m._2.genre == genre).values.toList)
+        db.selectMoviesByGenre(genre)
     }
 }
