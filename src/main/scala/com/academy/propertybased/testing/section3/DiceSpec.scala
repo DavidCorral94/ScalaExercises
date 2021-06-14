@@ -1,6 +1,6 @@
-package com.propertybased.testing.section3
+package com.academy.propertybased.testing.section3
 
-import com.propertybased.testing.section3.DiceGen.dieArb
+import com.academy.propertybased.testing.section3.DiceGen.dieArb
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers

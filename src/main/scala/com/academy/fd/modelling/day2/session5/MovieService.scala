@@ -1,10 +1,10 @@
-package com.fd.modelling.day2.session5
+package com.academy.fd.modelling.day2.session5
 
 import cats.Functor
 import cats.syntax.functor._
 import cats.effect.Sync
 import cats.effect.concurrent.Ref
-import com.fd.modelling.day2.session4.{Genre, Movie}
+import com.academy.fd.modelling.day2.session4.{Genre, Movie}
 import eu.timepit.refined.types.numeric.PosLong
 
 trait MovieService[F[_]] {

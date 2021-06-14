@@ -1,11 +1,11 @@
-package com.fd.modelling.day2.session5
+package com.academy.fd.modelling.day2.session5
 
 import cats.data.NonEmptyList
 import cats.effect.IO
 import cats.effect.testing.scalatest.AsyncIOSpec
-import com.fd.modelling.day2.session4.Data._
-import com.fd.modelling.day2.session4.UserValidationRules.EmailPredicate
-import com.fd.modelling.day2.session4._
+import com.academy.fd.modelling.day2.session4.Data._
+import com.academy.fd.modelling.day2.session4.UserValidationRules.EmailPredicate
+import com.academy.fd.modelling.day2.session4._
 import eu.timepit.refined._
 import eu.timepit.refined.collection.NonEmpty
 import eu.timepit.refined.numeric.Positive

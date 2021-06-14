@@ -1,10 +1,10 @@
-package com.fd.modelling.day2.session5
+package com.academy.fd.modelling.day2.session5
 
 import cats.data.NonEmptyList
 import cats.effect.IO
 import cats.effect.testing.scalatest.AsyncIOSpec
-import com.fd.modelling.day2.session4.Data.{Performer, Person}
-import com.fd.modelling.day2.session4.{Adventure, Movie, Rating, ScienceFiction}
+import com.academy.fd.modelling.day2.session4.Data.{Performer, Person}
+import com.academy.fd.modelling.day2.session4.{Adventure, Movie, Rating, ScienceFiction}
 import eu.timepit.refined._
 import eu.timepit.refined.collection.NonEmpty
 import eu.timepit.refined.numeric.Positive

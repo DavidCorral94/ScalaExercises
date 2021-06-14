@@ -1,10 +1,10 @@
-package com.fd.modelling.day2.session4
+package com.academy.fd.modelling.day2.session4
 
 import UserValidationRules.{Email, EmailPredicate}
 import cats.data.EitherNec
 import cats.syntax.either._
 import cats.syntax.parallel._
-import com.fd.modelling.day2.session4.Errors._
+import com.academy.fd.modelling.day2.session4.Errors._
 import eu.timepit.refined._
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.collection.NonEmpty

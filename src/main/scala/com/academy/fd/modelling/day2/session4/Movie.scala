@@ -1,8 +1,8 @@
-package com.fd.modelling.day2.session4
+package com.academy.fd.modelling.day2.session4
 
 import cats.data.NonEmptyList
-import com.fd.modelling.day2.session4.Data.{Performer, Person}
-import com.fd.modelling.day2.session4.Errors._
+import com.academy.fd.modelling.day2.session4.Data.{Performer, Person}
+import com.academy.fd.modelling.day2.session4.Errors._
 import eu.timepit.refined.refineV
 import cats.data.EitherNec
 import cats.implicits.catsSyntaxTuple3Parallel

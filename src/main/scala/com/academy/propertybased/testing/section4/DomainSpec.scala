@@ -1,7 +1,7 @@
-package com.propertybased.testing.section4
+package com.academy.propertybased.testing.section4
 
-import com.propertybased.testing.section4.DataTypes._
-import com.propertybased.testing.section4.Generators._
+import com.academy.propertybased.testing.section4.DataTypes._
+import com.academy.propertybased.testing.section4.Generators._
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckDrivenPropertyChecks

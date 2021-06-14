@@ -1,4 +1,4 @@
-package com.fd.modelling.day2.session4
+package com.academy.fd.modelling.day2.session4
 
 import cats.data.EitherNec
 import cats.syntax.either._
@@ -8,7 +8,7 @@ import eu.timepit.refined.collection.NonEmpty
 import eu.timepit.refined.numeric.Positive
 import eu.timepit.refined.types.numeric.PosLong
 import eu.timepit.refined.types.string.NonEmptyString
-import com.fd.modelling.day2.session4.Errors._
+import com.academy.fd.modelling.day2.session4.Errors._
 
 import java.time.LocalDate
 

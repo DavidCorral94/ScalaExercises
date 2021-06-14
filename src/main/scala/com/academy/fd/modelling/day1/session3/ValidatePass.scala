@@ -1,4 +1,4 @@
-package com.fd.modelling.day1.session3
+package com.academy.fd.modelling.day1.session3
 
 import cats.data.{Ior, IorNec, NonEmptyChain => Nec}
 import cats.implicits._

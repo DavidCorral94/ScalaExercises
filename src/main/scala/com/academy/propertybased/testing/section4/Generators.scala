@@ -1,6 +1,6 @@
-package com.propertybased.testing.section4
+package com.academy.propertybased.testing.section4
 
-import com.propertybased.testing.section4.DataTypes._
+import com.academy.propertybased.testing.section4.DataTypes._
 import org.scalacheck.{Arbitrary, Gen}
 
 object Generators {

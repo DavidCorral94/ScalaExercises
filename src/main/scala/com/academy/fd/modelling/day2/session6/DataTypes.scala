@@ -1,12 +1,12 @@
-package com.fd.modelling.day2.session6
+package com.academy.fd.modelling.day2.session6
 
 import cats.implicits._
 import cats.data.{EitherNec, NonEmptyList}
-import com.fd.modelling.day2.session6.DataTypes.UserValidationRules.{
+import com.academy.fd.modelling.day2.session6.DataTypes.UserValidationRules.{
   Email,
   EmailPredicate
 }
-import com.fd.modelling.day2.session6.Errors._
+import com.academy.fd.modelling.day2.session6.Errors._
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.collection.NonEmpty
 import eu.timepit.refined.numeric.Positive

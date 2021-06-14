@@ -1,4 +1,4 @@
-package com.propertybased.testing.section4
+package com.academy.propertybased.testing.section4
 
 object DataTypes {
 

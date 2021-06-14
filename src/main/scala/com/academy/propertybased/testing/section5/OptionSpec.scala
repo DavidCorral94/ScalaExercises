@@ -1,4 +1,4 @@
-package com.propertybased.testing.section5
+package com.academy.propertybased.testing.section5
 
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite

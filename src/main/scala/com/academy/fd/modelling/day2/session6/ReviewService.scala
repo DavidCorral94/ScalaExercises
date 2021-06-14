@@ -1,7 +1,7 @@
-package com.fd.modelling.day2.session6
+package com.academy.fd.modelling.day2.session6
 
 import cats.effect.Sync
-import com.fd.modelling.day2.session6.DataTypes.Review
+import com.academy.fd.modelling.day2.session6.DataTypes.Review
 import eu.timepit.refined.types.numeric.PosLong
 
 /**

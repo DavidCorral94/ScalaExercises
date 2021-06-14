@@ -1,7 +1,7 @@
-package com.fd.modelling.day2.session4
+package com.academy.fd.modelling.day2.session4
 
 import cats.data.EitherNec
-import com.fd.modelling.day2.session4.Errors._
+import com.academy.fd.modelling.day2.session4.Errors._
 import eu.timepit.refined.numeric.Positive
 import eu.timepit.refined.refineV
 import eu.timepit.refined.types.numeric.PosLong

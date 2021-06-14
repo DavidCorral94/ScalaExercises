@@ -1,8 +1,8 @@
-package com.fd.modelling.day2.session4
+package com.academy.fd.modelling.day2.session4
 
 import cats.data.EitherNec
 import cats.implicits._
-import com.fd.modelling.day2.session4.Errors.GenreNotSupported
+import com.academy.fd.modelling.day2.session4.Errors.GenreNotSupported
 
 // ADTs
 sealed abstract class Genre extends Product with Serializable

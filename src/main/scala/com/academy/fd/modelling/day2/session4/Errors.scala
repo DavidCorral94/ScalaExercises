@@ -1,4 +1,4 @@
-package com.fd.modelling.day2.session4
+package com.academy.fd.modelling.day2.session4
 
 import java.time.LocalDate
 

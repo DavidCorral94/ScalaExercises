@@ -1,4 +1,4 @@
-package com.fd.modelling.day1.session2
+package com.academy.fd.modelling.day1.session2
 
 import scala.collection.mutable
 

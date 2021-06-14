@@ -1,4 +1,4 @@
-package com.fd.modelling.day1.session3
+package com.academy.fd.modelling.day1.session3
 
 object Tuples {
   val red = (255, 0, 0)

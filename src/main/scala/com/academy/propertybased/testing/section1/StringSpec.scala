@@ -1,4 +1,4 @@
-package com.propertybased.testing.section1
+package com.academy.propertybased.testing.section1
 
 import org.scalacheck.Prop.forAll
 

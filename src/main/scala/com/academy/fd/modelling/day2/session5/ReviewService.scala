@@ -1,10 +1,10 @@
-package com.fd.modelling.day2.session5
+package com.academy.fd.modelling.day2.session5
 
 import cats.effect.Sync
 import cats.Functor
 import cats.syntax.functor._
 import cats.effect.concurrent.Ref
-import com.fd.modelling.day2.session4.Review
+import com.academy.fd.modelling.day2.session4.Review
 import eu.timepit.refined.types.numeric.PosLong
 
 trait ReviewService[F[_]] {

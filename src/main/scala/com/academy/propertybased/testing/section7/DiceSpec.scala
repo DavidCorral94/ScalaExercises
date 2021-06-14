@@ -1,6 +1,6 @@
-package com.propertybased.testing.section7
+package com.academy.propertybased.testing.section7
 
-import com.propertybased.testing.section7.DataTypes._
+import com.academy.propertybased.testing.section7.DataTypes._
 import org.scalacheck.Gen
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers

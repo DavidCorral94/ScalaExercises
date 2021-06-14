@@ -1,10 +1,10 @@
-package com.fd.modelling.day2.session5
+package com.academy.fd.modelling.day2.session5
 
 import cats.Monad
 import cats.syntax.flatMap._
 import cats.syntax.functor._
 import cats.syntax.traverse._
-import com.fd.modelling.day2.session4.{Genre, Movie}
+import com.academy.fd.modelling.day2.session4.{Genre, Movie}
 
 object Program {
 

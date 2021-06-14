@@ -1,4 +1,4 @@
-package com.fp.fundamentals
+package com.academy.fp.fundamentals
 
 object ExerciseCourse {
 

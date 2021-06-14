@@ -1,4 +1,4 @@
-package com.propertybased.testing.section7
+package com.academy.propertybased.testing.section7
 
 object DataTypes {
   sealed abstract class Die(val value: Int)

@@ -1,9 +1,9 @@
-package com.fd.modelling.day2.session5
+package com.academy.fd.modelling.day2.session5
 
 import cats.data.NonEmptyList
-import com.fd.modelling.day2.session4.Data._
-import com.fd.modelling.day2.session4.UserValidationRules.EmailPredicate
-import com.fd.modelling.day2.session4._
+import com.academy.fd.modelling.day2.session4.Data._
+import com.academy.fd.modelling.day2.session4.UserValidationRules.EmailPredicate
+import com.academy.fd.modelling.day2.session4._
 import eu.timepit.refined.collection.NonEmpty
 import eu.timepit.refined.numeric.Positive
 import eu.timepit.refined.refineMV

@@ -1,11 +1,11 @@
-package com.fd.modelling.day2.session6
+package com.academy.fd.modelling.day2.session6
 
 import cats.Monad
 import cats.effect.IO
 import cats.syntax.flatMap._
 import cats.syntax.functor._
 import cats.syntax.traverse._
-import com.fd.modelling.day2.session6.DataTypes._
+import com.academy.fd.modelling.day2.session6.DataTypes._
 
 object Program extends Data {
 
