@@ -28,6 +28,12 @@ libraryDependencies ++= Seq(
 
 libraryDependencies += "io.circe" %% "circe-optics" % circeVersion
 
+// Doobie scala exercises
+libraryDependencies ++= Seq(
+  "org.tpolecat" %% "doobie-core" % "0.12.1",
+  "org.tpolecat" %% "doobie-h2" % "0.12.1",
+  "org.tpolecat" %% "doobie-hikari" % "0.12.1"
+)
 
 addCompilerPlugin(
   "org.typelevel" %% "kind-projector" % "0.13.0" cross CrossVersion.full
