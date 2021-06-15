@@ -3,12 +3,13 @@ package com.exercises.doobie
 import cats.effect.{ExitCode, IO, IOApp}
 import doobie.ConnectionIO
 import doobie.implicits._
-import shapeless.record.Record
-import shapeless.{HList, HNil}
+import shapeless._
+import com.exercises.doobie.DoobieUtils.CountryTable._
+import com.exercises.doobie.Model._
+import cats.implicits._
+import com.exercises.doobie.Connecting.transactor
 
 object MultiColumnQuery extends IOApp {
-  def transactorBlock[A](f: => ConnectionIO[A]): IO[A] = ???
-  //transactor.use((createCountryTable *> insertCountries(countries) *> f).transact[IO])*
 
   /**
     * code    name                      population    gnp
@@ -19,6 +20,12 @@ object MultiColumnQuery extends IOApp {
     * "USA"  "United States of America"  278357000    8510700.00
     */
 
+  def transactorBlock[A](f: => ConnectionIO[A]): IO[A] =
+    transactor.use(
+      (createCountryTable *> dropCountries *> insertCountries(countries) *> f)
+        .transact[IO]
+    )
+
   override def run(args: List[String]): IO[ExitCode] = {
 
     val (name, population, gnp) =
@@ -28,9 +35,10 @@ object MultiColumnQuery extends IOApp {
           .unique
       }.unsafeRunSync()
 
-    name == "Spain"
-    population == "39441700"
-    gnp == None
+    println((name, population, gnp))
+    assert(name == "Spain")
+    assert(population == 39441700)
+    assert(gnp == None)
 
     type CountryHListType = String :: Int :: Option[Double] :: HNil
 
@@ -41,9 +49,9 @@ object MultiColumnQuery extends IOApp {
           .unique
       }.unsafeRunSync()
 
-    hlist == HList("France", 59225700, 1424285.00)
-
-    case class Country(code: String, name: String, population: Long, gnp: Option[Double])
+    println(hlist)
+    // res = HList("France", 59225700, 1424285.00)
+    assert(hlist.head == "France")
 
     val country =
       transactorBlock {
@@ -52,10 +60,7 @@ object MultiColumnQuery extends IOApp {
           .unique
       }.unsafeRunSync()
 
-    country.code == "GBR"
-
-    case class Code(code: String)
-    case class CountryInfo(name: String, pop: Int, gnp: Option[Double])
+    assert(country.code == "GBR")
 
     val (codev2, countryv2) =
       transactorBlock {
@@ -64,7 +69,8 @@ object MultiColumnQuery extends IOApp {
           .unique
       }.unsafeRunSync()
 
-    countryv2.name == "Spain"
+    println((codev2, countryv2))
+    assert(countryv2.name == "Spain")
 
     val notFoundCountry = CountryInfo("Not Found", 0, None)
 
@@ -75,8 +81,11 @@ object MultiColumnQuery extends IOApp {
           .to[List]
       }.unsafeRunSync().toMap
 
-    countriesMap.getOrElse(Code("DEU"), notFoundCountry).name == "Germany"
-    countriesMap.get(Code("ITA")) == None
+    println(countriesMap)
+    assert(
+      countriesMap.getOrElse(Code("DEU"), notFoundCountry).name == "Germany"
+    )
+    assert(countriesMap.get(Code("ITA")) == None)
 
     IO.pure(ExitCode.Success)
   }

@@ -32,7 +32,7 @@ object SelectingData extends IOApp {
       ).unsafeRunSync()
 
     println(countryName)
-    println(countryName == "Spain")
+    assert(countryName == "Spain")
 
     val maybeCountryName =
       transactorBlock(
@@ -40,7 +40,7 @@ object SelectingData extends IOApp {
       ).unsafeRunSync()
 
     println(maybeCountryName)
-    println(maybeCountryName == None)
+    assert(maybeCountryName == None)
 
     val countryNames =
       transactorBlock {
@@ -48,7 +48,7 @@ object SelectingData extends IOApp {
       }.unsafeRunSync()
 
     println(countryNames)
-    println(
+    assert(
       countryNames == List(
         "France",
         "Germany",
@@ -69,7 +69,7 @@ object SelectingData extends IOApp {
       }.unsafeRunSync()
 
     println(firstThreecountryNames)
-    println(firstThreecountryNames == List("France", "Germany", "Spain"))
+    assert(firstThreecountryNames == List("France", "Germany", "Spain"))
 
     IO.pure(ExitCode.Success)
   }
