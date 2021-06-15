@@ -32,7 +32,8 @@ libraryDependencies += "io.circe" %% "circe-optics" % circeVersion
 libraryDependencies ++= Seq(
   "org.tpolecat" %% "doobie-core" % "0.12.1",
   "org.tpolecat" %% "doobie-h2" % "0.12.1",
-  "org.tpolecat" %% "doobie-hikari" % "0.12.1"
+  "org.tpolecat" %% "doobie-hikari" % "0.12.1",
+  "org.tpolecat" %% "doobie-postgres" % "0.12.1"
 )
 
 addCompilerPlugin(
