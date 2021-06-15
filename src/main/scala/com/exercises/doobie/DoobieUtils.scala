@@ -52,18 +52,21 @@ object DoobieUtils {
       )
   }
 
-  object PersonTable {
+  object PeopleTable {
 
-    val createPersonTable: ConnectionIO[Int] =
+    val dropPeopleTable: ConnectionIO[Int] =
+      sql"""DROP TABLE IF EXISTS  people""".update.run
+
+    val createPeopleTable: ConnectionIO[Int] =
       sql"""
-          CREATE TABLE IF NOT EXISTS person (
-          id   IDENTITY,
+          CREATE TABLE IF NOT EXISTS people (
+          id        SERIAL,
           name VARCHAR NOT NULL UNIQUE,
           age  INT
           )
        """.update.run
 
-    def transactorBlock[A](f: => ConnectionIO[A]) =
-      transactor.use((createPersonTable *> f).transact[IO])
+    def transactorBlock[A](f: => ConnectionIO[A]): IO[A] =
+      transactor.use((dropPeopleTable *> createPeopleTable *> f).transact[IO])
   }
 }

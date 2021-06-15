@@ -2,6 +2,8 @@ package com.exercises.doobie
 
 object Model {
 
+  case class People(id: Int, name: String, age: Int)
+
   case class Country(
       code: String,
       name: String,

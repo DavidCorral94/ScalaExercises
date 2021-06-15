@@ -4,10 +4,13 @@ import cats.data.NonEmptyList
 import cats.effect.{ExitCode, IO, IOApp}
 import doobie.{ConnectionIO, Fragments}
 import doobie.implicits.toSqlInterpolator
+import doobie.implicits._
+import com.exercises.doobie.Connecting.transactor
+import com.exercises.doobie.DoobieUtils.CountryTable._
+import com.exercises.doobie.Model._
+import cats.implicits._
 
 object ParameterizedQueries extends IOApp {
-  def transactorBlock[A](f: => ConnectionIO[A]): IO[A] = ???
-  //transactor.use((createCountryTable *> insertCountries(countries) *> f).transact[IO])*
 
   /**
     * code    name                      population    gnp
@@ -18,7 +21,11 @@ object ParameterizedQueries extends IOApp {
     * "USA"  "United States of America"  278357000    8510700.00
     */
 
-  case class Country(name: String, pop: Int, gnp: Option[Double])
+  def transactorBlock[A](f: => ConnectionIO[A]): IO[A] =
+    transactor.use(
+      (createCountryTable *> dropCountries() *> insertCountries(countries) *> f)
+        .transact[IO]
+    )
 
   def biggerThan(minPop: Int): doobie.Query0[Country] =
     sql"""select code, name, population, gnp
@@ -51,21 +58,25 @@ object ParameterizedQueries extends IOApp {
       .unsafeRunSync()
       .map(_.name)
 
-    countriesName == List("Germany", "United States of America")
+    println(countriesName)
+    assert(countriesName == List("Germany", "United States of America"))
 
     val countriesNameRange =
       transactorBlock(populationIn(25000000 to 75000000).to[List])
         .unsafeRunSync()
         .map(_.name)
 
-    countriesNameRange == List("Spain", "France", "United Kingdom")
+    println(countriesNameRange)
+    assert(countriesNameRange == List("Spain", "France", "United Kingdom"))
 
     val countriesNameRangeIn = transactorBlock(
       populationIn(25000000 to 75000000, NonEmptyList.of("ESP", "USA", "FRA"))
-        .to[List]).unsafeRunSync()
+        .to[List]
+    ).unsafeRunSync()
       .map(_.name)
 
-    countriesNameRangeIn == List("Spain", "France")
+    println(countriesNameRangeIn)
+    assert(countriesNameRangeIn == List("Spain", "France"))
 
     IO.pure(ExitCode.Success)
   }
